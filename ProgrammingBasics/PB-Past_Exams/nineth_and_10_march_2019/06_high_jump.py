@@ -1,31 +1,43 @@
-target_height = int(input())
+target_jump = int(input())
 
-training_height = target_height - 30
-successful_jumps = 0
+training_jump = target_jump - 30
+failed_attempts = 0
 failed_training = False
-all_failed_jumps = 0
+failed_jumps = 0
+successful_jumps = 0
+last_jump = 0
 
-while target_height >= training_height:
-    new_jump = int(input())
-    failed_jumps = 0
+while (not failed_training) and target_jump >= training_jump:
+    attempt_jump = int(input())
 
-    while new_jump < training_height:
-        failed_jumps += 1
-        if failed_jumps == 3:
+    while attempt_jump <= training_jump:
+        failed_attempts += 1
+
+        if failed_attempts == 3:
             failed_training = True
+            break
 
-    if failed_training:
-        break
+        attempt_jump = int(input())
+        continue
 
-    all_failed_jumps += failed_jumps
+    # failed jumps counter
+    failed_jumps += failed_attempts
 
-    if new_jump > training_height:
+    # resetting the failed attempts counter after a successful jump
+    failed_attempts = 0
+
+    # Last jump
+    last_jump = training_jump
+
+    # Successful jumps counter
+    if attempt_jump > training_jump:
         successful_jumps += 1
-        training_height += 5
+        training_jump += 5
 
-all_jumps = all_failed_jumps + successful_jumps
+# All jumps counter
+all_jumps = failed_jumps + successful_jumps
 
 if failed_training:
-    print(f"Tihomir failed at {training_height}cm after {all_jumps} jumps.")
+    print(f"Tihomir failed at {last_jump}cm after {all_jumps} jumps.")
 else:
-    print(f"Tihomir succeeded, he jumped over {training_height}cm after {all_jumps} jumps.")
+    print(f"Tihomir succeeded, he jumped over {last_jump}cm after {all_jumps} jumps.")
